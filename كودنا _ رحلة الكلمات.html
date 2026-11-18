@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#06151a">
+<title>كودنا | رحلة الكلمات</title>
+<style>
+:root{--bg:#e8f6ef;--card:#fff;--line:#d5e8de;--tx:#16352a;--mut:#5d7a6d;--g1:#14c47e;--g2:#27e39a;--gd:#0f6e56;--bad:#e24b4a;--sh:#c9ddd2}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1c17;--card:#12281f;--line:#1d3d30;--tx:#e6f6ee;--mut:#8fb3a2;--gd:#27e39a;--sh:#05100c}}
+*{box-sizing:border-box;margin:0;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--tx);max-width:520px;margin:auto;padding:max(14px,env(safe-area-inset-top,0px)) 16px max(18px,env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
+header{display:flex;align-items:center;gap:12px}
+header img{width:46px;height:46px;border-radius:14px;box-shadow:0 4px 0 var(--sh)}
+.ti{flex:1}.ti b{display:block;font-size:20px;color:var(--gd)}.ti span{font-size:13px;color:var(--mut)}
+.pill{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:7px 14px;font-size:14px;font-weight:700;box-shadow:0 3px 0 var(--sh)}
+#msg{min-height:22px;text-align:center;font-size:14px;color:var(--mut)}
+#map{perspective:700px;overflow:hidden;padding:6px 0 30px}
+#path{display:flex;flex-direction:column;align-items:center;gap:26px;transform:rotateX(24deg);transform-origin:50% 0;transform-style:preserve-3d}
+.cn{width:210px;padding:14px 16px;border-radius:22px;color:#fff;border:0;text-align:right;transform:translateZ(30px);box-shadow:0 9px 0 rgba(0,0,0,.28),0 22px 28px rgba(0,0,0,.22);transition:transform .15s}
+.cn:nth-child(odd){margin-inline-start:70px}.cn:nth-child(even){margin-inline-end:70px}
+.cn:active{transform:translateZ(30px) translateY(6px);box-shadow:0 3px 0 rgba(0,0,0,.28)}
+.cn b{display:block;font-size:19px}.cn span{font-size:13px;opacity:.95}
+.cn.lk{background:#8b9a93!important;opacity:.65}
+.cn.cur{animation:pu 1.6s ease-in-out infinite}
+@keyframes pu{50%{transform:translateZ(46px)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;font-size:16px;line-height:1.8;box-shadow:0 5px 0 var(--sh)}
+.b{display:block;width:100%;height:52px;border-radius:15px;border:1px solid var(--line);background:var(--card);color:var(--tx);font-size:17px;font-weight:700;box-shadow:0 5px 0 var(--sh);margin-top:10px;transition:transform .08s}
+.b:active{transform:translateY(4px);box-shadow:0 1px 0 var(--sh)}
+.b.ok{background:var(--g1);border-color:var(--g1);color:#03211a;box-shadow:0 5px 0 #0c8a56}
+.b.no{background:var(--bad);border-color:var(--bad);color:#fff;box-shadow:0 5px 0 #a32d2d}
+.b.p{background:linear-gradient(135deg,var(--g2),var(--g1));border:0;color:#03211a;box-shadow:0 5px 0 #0c8a56}
+.b.sm{display:inline-block;width:auto;padding:0 22px;height:46px}
+#slots{display:flex;gap:8px;justify-content:center;margin:14px 0}
+.s{width:46px;height:54px;border-radius:12px;background:var(--card);border:2px solid var(--line);font-size:25px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 0 var(--sh)}
+.s.f{border-color:var(--g1)}.s.ok{background:var(--g1);color:#03211a}.s.no{border-color:var(--bad);animation:sh .4s}
+@keyframes sh{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+#tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.t{height:54px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:24px;font-weight:700;color:var(--gd);box-shadow:0 5px 0 var(--sh)}
+.t:active{transform:translateY(4px);box-shadow:0 1px 0 var(--sh)}.t.u{opacity:.25}
+svg.sc{width:100%;border-radius:14px;box-shadow:0 5px 0 var(--sh);display:block;margin-top:10px}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<header>
+ <img src="data:image/jpeg;base64,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" alt="">
+ <div class="ti"><b>كودنا</b><span id="sub">رحلة الكلمات في الوطن العربي</span></div>
+ <div class="pill">⭐ <span id="sc">0</span></div>
+</header>
+<div id="msg"></div>
+<div id="map"><div id="path"></div></div>
+<div id="lv" class="hide">
+ <div class="card" id="lh"></div>
+ <div id="lb"></div>
+ <button class="b sm" onclick="go()" style="margin-top:14px">الخريطة</button>
+</div>
+<script>
+const C=[
+{n:"اليمن",c:"#c0392b",q:["أي جزيرة يمنية تشتهر بشجرة دم الأخوين؟",["سقطرى","فرسان","جربة"],0],p:["الوقت كالسيف إن لم تقطعه …",["قطعك","رفعك","منعك"],0],w:["قهوة","مشروب يمني شهير"]},
+{n:"السعودية",c:"#1e8449",q:["ما اسم المدينة الأثرية الشهيرة في العلا؟",["مدائن صالح","البتراء","تدمر"],0],p:["من جدّ وجد، ومن زرع …",["حصد","نام","هرب"],0],w:["نخلة","شجرة تعطي التمر"]},
+{n:"الإمارات",c:"#2874a6",q:["في أي مدينة يقع برج خليفة؟",["دبي","الشارقة","العين"],0],p:["الصبر مفتاح …",["الفرج","الباب","الحل"],0],w:["صقر","طائر الصيد المحبوب"]},
+{n:"الأردن",c:"#af601a",q:["ما المدينة الوردية المنحوتة في الصخر؟",["البتراء","جرش","العقبة"],0],p:["العلم في الصغر كالنقش على …",["الحجر","الماء","الورق"],0],w:["منسف","أكلة أردنية شهيرة"]},
+{n:"مصر",c:"#7d3c98",q:["ما اسم أكبر أهرامات الجيزة؟",["خوفو","خفرع","منكاورع"],0],p:["الجار قبل …",["الدار","السفر","الأهل"],0],w:["نيل","نهر يعبر مصر"]},
+{n:"المغرب",c:"#cb4335",q:["ما المدينة الزرقاء الشهيرة في المغرب؟",["شفشاون","فاس","مراكش"],0],p:["الصديق وقت …",["الضيق","الفرح","الراحة"],0],w:["كسكس","أكلة مغربية مشهورة"]},
+{n:"العراق",c:"#117a65",q:["ما النهران اللذان يعبران العراق؟",["دجلة والفرات","النيل والفرات","دجلة والنيل"],0],p:["خير الكلام ما قلّ و…",["دلّ","طال","كثر"],0],w:["دجلة","نهر في بغداد"]},
+{n:"عُمان",c:"#b9770e",q:["ما عاصمة سلطنة عُمان؟",["مسقط","صلالة","نزوى"],0],p:["درهم وقاية خير من …",["قنطار علاج","ألف دواء","كثير سفر"],0],w:["لبان","يُستخرج من شجر ظفار"]},
+{n:"الكويت",c:"#1f618d",q:["ما الأبراج التي تُعد رمزاً للكويت؟",["أبراج الكويت","برج خليفة","برج المملكة"],0],p:["في التأني السلامة، وفي العجلة …",["الندامة","السرعة","الفرحة"],0],w:["لؤلؤ","كان الغوص عليه مهنة الأجداد في الخليج"]},
+{n:"البحرين",c:"#a93226",q:["أي قلعة بحرينية مسجلة في اليونسكو؟",["قلعة البحرين","قلعة حلب","قلعة صلاح الدين"],0],p:["إذا كان الكلام من فضة فالسكوت من …",["ذهب","حديد","خشب"],0],w:["دلمون","حضارة قديمة في البحرين"]},
+{n:"قطر",c:"#7b241c",q:["أي متحف في الدوحة صممه المعماري جان نوفيل على شكل وردة الصحراء؟",["المتحف الوطني","متحف الفن الإسلامي","متحف اللوفر"],0],p:["رُبَّ أخٍ لك لم تلده …",["أمك","جارتك","مدينتك"],0],w:["الدوحة","عاصمة قطر"]},
+{n:"سوريا",c:"#1d8348",q:["ما المدينة الأثرية الملقبة بعروس الصحراء في سوريا؟",["تدمر","البتراء","مدائن صالح"],0],p:["من سار على الدرب …",["وصل","نام","ضاع"],0],w:["ياسمين","زهرة تشتهر بها دمشق"]},
+{n:"لبنان",c:"#b03a2e",q:["ما الشجرة الموجودة على علم لبنان؟",["الأرز","النخيل","الزيتون"],0],p:["لكل مجتهد …",["نصيب","وقت","سفر"],0],w:["بعلبك","مدينة فيها معابد رومانية شهيرة"]},
+{n:"فلسطين",c:"#145a32",q:["أي مدينة فلسطينية تضم كنيسة المهد؟",["بيت لحم","غزة","نابلس"],0],p:["القناعة كنز لا …",["يفنى","يُباع","يُرى"],0],w:["زيتون","شجرة مباركة تشتهر بها فلسطين"]},
+{n:"السودان",c:"#6e2c00",q:["أي مدينة يلتقي فيها النيل الأبيض بالنيل الأزرق؟",["الخرطوم","أم درمان","بورتسودان"],0],p:["اليد الواحدة لا …",["تصفق","تكتب","تجري"],0],w:["مروي","مدينة أهرامات سودانية قديمة"]},
+{n:"ليبيا",c:"#1b4f72",q:["ما المدينة الرومانية الأثرية الساحلية في ليبيا المسجلة في اليونسكو؟",["لبدة الكبرى","تدمر","جرش"],0],p:["لا تؤجل عمل اليوم إلى …",["الغد","الشهر","السنة"],0],w:["طرابلس","عاصمة ليبيا"]},
+{n:"تونس",c:"#922b21",q:["ما المدينة الأثرية القريبة من تونس العاصمة الشهيرة بتاريخ قرطاجة؟",["قرطاج","لبدة","تدمر"],0],p:["الحاجة أم …",["الاختراع","السفر","الراحة"],0],w:["جربة","جزيرة تونسية سياحية"]},
+{n:"الجزائر",c:"#196f3d",q:["ما أكبر صحراء تغطي جزءاً كبيراً من الجزائر؟",["الصحراء الكبرى","الربع الخالي","النفود"],0],p:["من طلب العلا سهر …",["الليالي","النهار","الطريق"],0],w:["وهران","ثاني أكبر مدن الجزائر"]},
+{n:"موريتانيا",c:"#9a7d0a",q:["أي مدينة موريتانية قديمة تشتهر بمكتباتها المخطوطة؟",["شنقيط","تمبكتو","فاس"],0],p:["من صبر …",["ظفر","نام","ضحك"],0],w:["جمل","سفينة الصحراء"]},
+{n:"الصومال",c:"#2e86c1",q:["ما عاصمة الصومال؟",["مقديشو","هرجيسا","بربرة"],0],p:["الوقاية خير من …",["العلاج","الجوع","السفر"],0],w:["موز","فاكهة تصدّرها الصومال"]},
+{n:"جيبوتي",c:"#148f77",q:["ما اسم البحيرة شديدة الملوحة في جيبوتي؟",["بحيرة عسل","بحيرة تانا","بحيرة فكتوريا"],0],p:["من لا يشكر القليل لا يشكر …",["الكثير","الناس","الوقت"],0],w:["جيبوتي","اسم الدولة وعاصمتها"]},
+{n:"جزر القمر",c:"#7d6608",q:["في أي قارة تقع جزر القمر؟",["إفريقيا","آسيا","أوروبا"],0],p:["الشجرة تُعرف من …",["ثمرها","ظلها","جذعها"],0],w:["قمر","اسم الجزر وشيء ينير الليل"]}];
+const NAMES=["معلم","حكمة","كلمة","اوجد الاختلاف"];
+const $=id=>document.getElementById(id);
+const tg=window.Telegram&&Telegram.WebApp;if(tg){try{tg.ready();tg.expand()}catch(e){}}
+let st={done:0,score:0};
+try{const s=JSON.parse(localStorage.getItem("kodna2"));if(s&&typeof s.done==="number")st=s}catch(e){}
+function save(){try{localStorage.setItem("kodna2",JSON.stringify(st))}catch(e){}}
+function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function toast(t){$("msg").textContent=t}
+let L=0,ci=0,ty=0;
+function go(){$("lv").classList.add("hide");$("map").classList.remove("hide");toast("");draw()}
+function draw(){
+ $("sc").textContent=st.score;$("path").innerHTML="";
+ C.forEach((c,i)=>{const pr=Math.min(Math.max(st.done-i*4,0),4),lk=st.done<i*4;
+  const b=document.createElement("button");b.className="cn"+(lk?" lk":"")+(!lk&&pr<4&&st.done>=i*4?" cur":"");
+  b.style.background="linear-gradient(135deg,"+c.c+",#222)";
+  b.innerHTML="<b>"+c.n+"</b><span>"+(lk?"مقفلة":"★".repeat(pr)+"☆".repeat(4-pr))+"</span>";
+  b.onclick=()=>open(i);$("path").appendChild(b)});const cu=document.querySelector(".cn.cur");if(cu&&st.done>0)cu.scrollIntoView({block:"center"})}
+function open(i){
+ if(st.done<i*4){toast("أكمل البلد السابق أولاً");return}
+ ci=i;ty=Math.min(Math.max(st.done-i*4,0),3);L=i*4+ty;
+ $("map").classList.add("hide");$("lv").classList.remove("hide");toast("");
+ $("lh").innerHTML="وصلنا <b>"+C[i].n+"</b><br><span style='font-size:14px;color:var(--mut)'>المرحلة "+(ty+1)+" من ٤ · "+NAMES[ty]+"</span>";
+ [Q,P,Wd,Df][ty]()}
+function finish(pts){
+ if(L===st.done){st.done++;st.score+=pts;save()}$("sc").textContent=st.score;
+ try{tg&&tg.HapticFeedback.notificationOccurred("success")}catch(e){}
+ const n=L+1,last=n>=C.length*4;
+ const b=document.createElement("button");b.className="b p";b.textContent=last?"خلصت الرحلة! الخريطة":"المرحلة التالية";
+ b.onclick=()=>last?go():open(Math.floor(n/4));$("lb").appendChild(b);toast("صح! أحسنت")}
+function mc(q,o,a){
+ $("lb").innerHTML='<div class="card" style="margin-top:10px">'+q+'</div><div id="ops"></div>';
+ shuf([0,1,2]).forEach(k=>{const b=document.createElement("button");b.className="b";b.textContent=o[k];
+  b.onclick=()=>{if(k===a){b.classList.add("ok");document.querySelectorAll("#ops .b").forEach(x=>x.disabled=true);finish(10)}else{b.classList.add("no");b.disabled=true;toast("جرب مرة ثانية")}};$("ops").appendChild(b)})}
+function Q(){const x=C[ci].q;mc(x[0],x[1],x[2])}
+function P(){const x=C[ci].p;mc(x[0],x[1],x[2])}
+let word,slots,fixed,tiles,hinted,locked;
+function Wd(){
+ const w=C[ci].w;word=Array.from(w[0]);slots=Array(word.length).fill(-1);fixed=Array(word.length).fill(false);
+ const pool=Array.from("ابتجحدرزسعفقكلمنهوي").filter(c=>!word.includes(c));
+ tiles=shuf(word.concat(shuf(pool).slice(0,Math.max(3,8-word.length)))).map(c=>({c,u:false}));hinted=0;locked=false;
+ $("lb").innerHTML='<div class="card" style="margin-top:10px">التلميح: '+w[1]+'</div><div id="slots"></div><div id="tiles"></div><button class="b sm" id="bh">تلميح</button> <button class="b sm" id="bs">خلط</button>';
+ $("bh").onclick=hint;$("bs").onclick=()=>{if(locked)return;const idx=[];tiles.forEach((t,i)=>{if(!t.u)idx.push(i)});const o=shuf(idx.map(i=>tiles[i]));idx.forEach((i,k)=>{tiles[i]=o[k]});rw()};rw()}
+function rw(){
+ $("slots").innerHTML="";slots.forEach((t,s)=>{const d=document.createElement("div");d.className="s"+(t>=0?" f":"")+(fixed[s]?" ok":"");d.textContent=t>=0?tiles[t].c:"";d.onclick=()=>{if(locked||fixed[s]||t<0)return;tiles[t].u=false;slots[s]=-1;rw()};$("slots").appendChild(d)});
+ $("tiles").innerHTML="";tiles.forEach((t,i)=>{const b=document.createElement("button");b.className="t"+(t.u?" u":"");b.textContent=t.c;b.onclick=()=>{if(locked||t.u)return;const s=slots.indexOf(-1);if(s<0)return;slots[s]=i;t.u=true;rw();if(slots.indexOf(-1)<0)chk()};$("tiles").appendChild(b)})}
+function chk(){
+ if(slots.map(i=>tiles[i].c).join("")===word.join("")){locked=true;document.querySelectorAll(".s").forEach(e=>e.classList.add("ok"));$("bh").classList.add("hide");$("bs").classList.add("hide");finish(hinted?5:10)}
+ else{locked=true;document.querySelectorAll(".s").forEach((e,s)=>{if(!fixed[s])e.classList.add("no")});toast("جرب مرة ثانية");
+  setTimeout(()=>{slots.forEach((t,s)=>{if(!fixed[s]&&t>=0){tiles[t].u=false;slots[s]=-1}});locked=false;toast("");rw()},700)}}
+function hint(){if(locked)return;let s=-1;for(let k=0;k<word.length;k++){if(fixed[k])continue;if(slots[k]<0||tiles[slots[k]].c!==word[k]){s=k;break}}
+ if(s<0)return;if(slots[s]>=0){tiles[slots[s]].u=false;slots[s]=-1}
+ const t=tiles.findIndex(x=>x.c===word[s]&&!x.u);if(t<0)return;slots[s]=t;tiles[t].u=true;fixed[s]=true;hinted++;rw();if(slots.indexOf(-1)<0)chk()}
+const PT={1:[250,35],2:[70,40],3:[140,120],4:[219,66],5:[50,77],6:[166,28]};
+function scene(d,hit,found){const a=i=>d.has(i);
+ return '<svg class="sc" viewBox="0 0 300 180"><rect width="300" height="180" fill="#bfe8ff"/>'+
+ '<circle cx="250" cy="35" r="'+(a(1)?13:20)+'" fill="'+(a(1)?"#ff9f43":"#ffd43b")+'"/>'+
+ (a(2)?"":'<ellipse cx="70" cy="40" rx="30" ry="12" fill="#fff"/>')+
+ '<rect y="130" width="300" height="50" fill="#e9c46a"/><rect x="110" y="85" width="60" height="50" fill="#f4e3c1"/>'+
+ '<rect x="132" y="108" width="16" height="27" fill="'+(a(3)?"#2a9d8f":"#8d5524")+'"/>'+
+ '<rect x="215" y="70" width="8" height="65" fill="#7b4a1e"/><ellipse cx="219" cy="66" rx="26" ry="10" fill="'+(a(4)?"#e76f51":"#2d9d4f")+'"/>'+
+ '<rect x="38" y="70" width="4" height="65" fill="#555"/><rect x="42" y="70" width="'+(a(5)?14:26)+'" height="14" fill="#c0392b"/>'+
+ (a(6)?"":'<path d="M150 30q8-8 16 0q8-8 16 0" stroke="#333" fill="none" stroke-width="2"/>')+
+ (hit?[1,2,3,4,5,6].map(i=>'<circle data-i="'+i+'" cx="'+PT[i][0]+'" cy="'+PT[i][1]+'" r="22" fill="transparent"/>').join(""):"")+
+ (found?[...found].map(i=>'<circle cx="'+PT[i][0]+'" cy="'+PT[i][1]+'" r="20" fill="none" stroke="#e24b4a" stroke-width="3"/>').join(""):"")+'</svg>'}
+function Df(){
+ const D=new Set(shuf([1,2,3,4,5,6]).slice(0,3)),F=new Set();
+ $("lb").innerHTML='<div class="card" style="margin-top:10px">اوجد ٣ اختلافات بين الصورتين، وانقر عليها في الصورة السفلى. <b id="fc">٠/٣</b></div><div id="im"></div>';
+ function r(){$("im").innerHTML=scene(new Set(),false)+scene(D,true,F);$("fc").textContent=F.size+"/3";
+  $("im").lastChild.onclick=e=>{const i=+e.target.dataset.i;if(!i)return;if(F.has(i))return;if(D.has(i)){F.add(i);r();if(F.size===3)finish(15)}else toast("ليس هنا، جرب مرة ثانية")}}
+ r()}
+draw();
+</script>
+</body>
+</html>
